@@ -1,4 +1,7 @@
 # names of hurricanes
+from xdrlib import ConversionError
+
+
 names = ['Cuba I', 'San Felipe II Okeechobee', 'Bahamas', 'Cuba II', 'CubaBrownsville', 'Tampico', 'Labor Day', 'New England', 'Carol', 'Janet', 'Carla', 'Hattie', 'Beulah', 'Camille', 'Edith', 'Anita', 'David', 'Allen', 'Gilbert', 'Hugo', 'Andrew', 'Mitch', 'Isabel', 'Ivan', 'Emily', 'Katrina', 'Rita', 'Wilma', 'Dean', 'Felix', 'Matthew', 'Irma', 'Maria', 'Michael']
 
 # months of hurricanes
@@ -23,26 +26,24 @@ deaths = [90,4000,16,3103,179,184,408,682,5,1023,43,319,688,259,37,11,2068,269,3
 # Update Recorded Damages
 conversion = {"M": 1000000,
               "B": 1000000000}
+print(conversion.keys())
 
 # test function by updating damages
 
-
-    
-    
-
 def damages_float(damages):
-  updated = []
-  for cost in damages:
-    if cost[-1] == "M":
-      updated.append(float(cost[:-1]) * conversion[cost[-1]])
-    elif cost[-1] == "B":
-      updated.append(float(cost[:-1]) * conversion["B"])   
-    else:
-      updated.append(cost)
-  return updated
+
+    updated = []
+    for cost in damages:
+        if cost[-1] in conversion.keys():
+            for char in conversion.keys():
+                if cost[-1] == char:
+                    updated.append(float(cost[:-1]) * conversion[char])
+        else:           
+            updated.append(cost)
+    return updated
 
 new_damages = damages_float(damages)
-
+print(new_damages)
 # 2 
 # Create a Table
 
@@ -86,7 +87,7 @@ def affected_areas_dict(areas_affected):
   return area_dict
       
 area_dict = affected_areas_dict(areas_affected)
-print(area_dict)
+#print(area_dict)
 # 5 
 # Calculating Maximum Hurricane Count
 
@@ -102,12 +103,12 @@ def most_affected_area(area_dict):
       highest_value_name = highest_value_name + ", " + str(area)
   return highest_value_name, highest_value 
 
-print(most_affected_area(area_dict))
+#print(most_affected_area(area_dict))
 
 # 6
 # Calculating the Deadliest Hurricane
 
-# function using 
+# function using lists instead of dictionary
 
 #def most_deaths(names, deaths):
 #  count = -1 
@@ -135,7 +136,7 @@ def most_deaths(hurricane_dict):
   return name, death_value
 
 
-print(most_deaths(hurricane_dict))
+#print(most_deaths(hurricane_dict))
 # find highest mortality hurricane and the number of deaths
 
 # 7
@@ -184,14 +185,14 @@ def most_damage(hurricane_dict):
       if hurricane_dict[cane]["Damage"] > damage_value:
         damage_value = hurricane_dict[cane]["Damage"]
         name = hurricane_dict[cane]["Name"]
-#Check for names with same number of deaths so included
+#Check for names with same damage so included
       elif hurricane_dict[cane]["Damage"] == damage_value:
         name = name + ", " + hurricane_dict[cane]["Name"]
     except TypeError:
       continue
   return f"The hurricane {name}, inflicted the most damage, costing ${damage_value}"
 # find highest damage inducing hurricane and its total cost
-print(most_damage(hurricane_dict))
+#print(most_damage(hurricane_dict))
 
 # 9
 # Rating Hurricanes by Damage
@@ -236,5 +237,5 @@ def damage_cat (hurricane_dict, damage_scale):
     damage_rating_dict[5] = list5
   return damage_rating_dict
 damage_rating_dict = damage_cat (hurricane_dict, damage_scale)
-print(damage_rating_dict)
+#print(damage_rating_dict)
 
